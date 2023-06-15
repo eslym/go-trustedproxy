@@ -10,7 +10,8 @@ import (
 // ForwardedRequest is an interface that extends http.Request with methods to
 // access the trusted proxy information.
 type ForwardedRequest interface {
-	*http.Request
+	// GetOriginalRequest returns the original request.
+	GetOriginalRequest() *http.Request
 
 	// IsBehindProxy returns true if the request is coming from a trusted proxy.
 	IsBehindProxy() bool
@@ -57,6 +58,10 @@ type forwardedRequest struct {
 	trustedURL *url.URL
 
 	trustedRequest *http.Request
+}
+
+func (f *forwardedRequest) GetOriginalRequest() *http.Request {
+	return f.Request
 }
 
 func (f *forwardedRequest) IsBehindProxy() bool {
