@@ -15,7 +15,7 @@ type IPExtractor interface {
 // the ip before the remote as proxy ip, and the rest of the ip chain as the forwarded ips
 // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For#selecting_an_ip_address
 type CIDRWhitelist struct {
-	whitelist []*net.IPNet
+	Whitelist []*net.IPNet
 }
 
 // OffsetIPExtractor start from the right to the left, treat the first ip as the proxy ip, the second ip as
@@ -35,7 +35,7 @@ func (c *CIDRWhitelist) Resolve(remote net.IP, forwarded []net.IP) (net.IP, net.
 }
 
 func (c *CIDRWhitelist) Contains(ip net.IP) bool {
-	for _, cidr := range c.whitelist {
+	for _, cidr := range c.Whitelist {
 		if cidr.Contains(ip) {
 			return true
 		}
