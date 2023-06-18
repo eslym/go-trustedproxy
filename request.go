@@ -174,12 +174,12 @@ func (f *forwardedRequest) BuildRequestForForward(stripForwardedIPs bool) *http.
 	var ips []string
 
 	if !stripForwardedIPs {
-		for _, ip := range f.trustedForwardedFor {
+		for _, ip := range f.GetTrustedForwardedFor() {
 			ips = append(ips, ip.String())
 		}
 	}
 
-	ips = append(ips, f.trustedRemoteAddr.String())
+	ips = append(ips, f.GetTrustedRemoteAddr().String())
 
 	req.Header.Set("X-Forwarded-For", strings.Join(ips, ", "))
 	req.Header.Set("X-Forwarded-Host", f.GetTrustedHost())
