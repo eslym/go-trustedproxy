@@ -76,7 +76,7 @@ func (f *forwardedRequest) GetTrustedHost() string {
 	if f.trustedHost != "" {
 		return f.trustedHost
 	}
-	if f.proxyIP != nil {
+	if f.proxyIP == nil {
 		f.trustedHost = f.Host
 		return f.trustedHost
 	}
@@ -93,7 +93,7 @@ func (f *forwardedRequest) GetTrustedProto() string {
 	if f.trustedProto != "" {
 		return f.trustedProto
 	}
-	if f.proxyIP != nil {
+	if f.proxyIP == nil {
 		if f.TLS != nil {
 			f.trustedProto = "https"
 		} else {
