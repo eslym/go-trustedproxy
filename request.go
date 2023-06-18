@@ -38,10 +38,10 @@ type ForwardedRequest interface {
 	// GetTrustedRequest returns the trusted request of the request.
 	GetTrustedRequest() *http.Request
 
-	// WithXForwardedHeaders returns a copy of the request with proper X-Forwarded-* headers
+	// BuildRequestForForward returns a copy of the request with proper X-Forwarded-* headers
 	// set for forwarding to the next server.
 	// stripForwardedIPs will keep the only trusted remote address in X-Forwarded-For.
-	WithXForwardedHeaders(stripForwardedIPs bool) *http.Request
+	BuildRequestForForward(stripForwardedIPs bool) *http.Request
 }
 
 type forwardedRequest struct {
