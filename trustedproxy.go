@@ -23,7 +23,12 @@ func WithTrustedProxyContext(resolver IPExtractor, next http.Handler) http.Handl
 		r = r.Clone(context.WithValue(r.Context(), CtxKeyForwardedRequest, fr))
 		fr.Request = r
 		ips := ExtractForwardedForIPs(&r.Header)
-		proxy, trustedRemote, restIps, err := resolver.Resolve(net.ParseIP(r.RemoteAddr), ips)
+		raddr, err := net.ResolveTCPAddr("tcp", r.RemoteAddr)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		proxy, trustedRemote, restIps, err := resolver.Resolve(raddr.IP, ips)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
