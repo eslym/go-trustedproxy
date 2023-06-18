@@ -19,10 +19,9 @@ func WithTrustedRequest(resolver IPExtractor, next http.Handler) http.Handler {
 // use context.Value(CtxKeyForwardedRequest).(*forwardedRequest) to get the request with extended info
 func WithTrustedProxyContext(resolver IPExtractor, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fr := &forwardedRequest{
-			Request: r,
-		}
+		fr := &forwardedRequest{}
 		r = r.Clone(context.WithValue(r.Context(), CtxKeyForwardedRequest, fr))
+		fr.Request = r
 		ips := ExtractForwardedForIPs(&r.Header)
 		proxy, trustedRemote, restIps, err := resolver.Resolve(net.ParseIP(r.RemoteAddr), ips)
 		if err != nil {
