@@ -136,7 +136,7 @@ func (f *forwardedRequest) GetTrustedURL() *url.URL {
 	}
 	u, _ := url.Parse(f.URL.String())
 	u.Host = f.GetTrustedHost()
-	u.Scheme = f.GetTrustedProto() + ":"
+	u.Scheme = f.GetTrustedProto()
 	f.trustedURL = u
 	return f.trustedURL
 }
