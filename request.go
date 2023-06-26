@@ -164,7 +164,10 @@ func (f *forwardedRequest) GetTrustedRequest() *http.Request {
 func (f *forwardedRequest) BuildRequestForForward(stripForwardedIPs bool) *http.Request {
 	req := f.Clone(f.Context())
 	req.Host = f.GetTrustedHost()
-	req.URL = f.GetTrustedURL()
+
+	// clone the url to avoid modifying the original request url
+	u := *f.GetTrustedURL()
+	req.URL = &u
 
 	req.Header.Del("X-Forwarded-For")
 	req.Header.Del("X-Forwarded-Host")
